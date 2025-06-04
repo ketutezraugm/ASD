@@ -34,7 +34,7 @@ void bfs(const vector<vector<int>> &adj, int start) {
         
         // Visit all neighbors of the current node 
         for (int neighbor : adj [node]) {
-            if (visited[neighbor]) { // If not visited
+            if (!visited[neighbor]) { // If not visited
                 visited[neighbor] = true; // Mark as visited 
                 q.push(neighbor); // Push to the queue for further traversal
             }

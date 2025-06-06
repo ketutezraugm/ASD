@@ -3,28 +3,12 @@ using namespace std;
 
 const double INF = 1e9;
 
-// Add edge to adjacency matrix
+// add edge
 void addEdge(vector<vector<double>> &mat, int i, int j, double distance) {
     mat[i][j] = distance;
 }
 
-// Display the adjacency matrix
-void displayMatrix(vector<vector<double>> &mat) {
-    int V = mat.size();
-
-    cout << "Adjacency Matrix Representation\n";
-    for (int i = 0; i < V; i++) {
-        for (int j = 0; j < V; j++) {
-            if (mat[i][j] >= INF)
-                cout << "∞ ";
-            else
-                cout << fixed << setprecision(1) << mat[i][j] << " ";
-        }
-        cout << endl;
-    }
-}
-
-// Find the vertex with minimum distance that is not yet processed
+// find the vertex with shortest path
 int minDistance(vector<double> &dist, vector<bool> &visited) {
     double min = INF;
     int min_index = -1;
@@ -38,7 +22,7 @@ int minDistance(vector<double> &dist, vector<bool> &visited) {
     return min_index;
 }
 
-// Dijkstra’s algorithm for shortest paths from source vertex
+// dijkstra’s algorithm
 void dijkstra(vector<vector<double>> &graph, int src) {
     int V = graph.size();
     vector<double> dist(V, INF);
@@ -48,7 +32,7 @@ void dijkstra(vector<vector<double>> &graph, int src) {
 
     for (int count = 0; count < V - 1; count++) {
         int u = minDistance(dist, visited);
-        if (u == -1) break; // All reachable vertices are processed
+        if (u == -1) break;
 
         visited[u] = true;
 
@@ -59,8 +43,8 @@ void dijkstra(vector<vector<double>> &graph, int src) {
         }
     }
 
-    // Print shortest distances from source
-    cout << "\nShortest distances from source (node " << src << "):\n";
+    // print shortest distances from source
+    cout << "Shortest distances from source (node " << src << "):\n";
     for (int i = 0; i < V; i++) {
         cout << "To node " << i << ": ";
         if (dist[i] >= INF)
@@ -78,14 +62,14 @@ int main() {
     for (int i = 0; i < V; i++)
         mat[i][i] = 0.0;
 
-    // Index mapping:
+    // index mapping:
     // 0 - Home
     // 1 - GSP
     // 2 - RSGM
     // 3 - Balairung UGM
     // 4 - Faculty of MIPA
 
-    // Add edges
+    // add edges
     addEdge(mat, 0, 1, 4.4); // Home -> GSP
     addEdge(mat, 0, 2, 4.4); // Home -> RSGM
 
@@ -105,9 +89,7 @@ int main() {
     addEdge(mat, 4, 2, 1.5); // Faculty of MIPA -> RSGM
     addEdge(mat, 4, 3, 1.9); // Faculty of MIPA -> Balairung UGM
 
-    displayMatrix(mat);
-
-    // Run Dijkstra from source: Home (node 0)
+    // call dijkstra algorithm
     dijkstra(mat, 0);
 
     return 0;

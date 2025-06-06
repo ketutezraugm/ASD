@@ -22,11 +22,12 @@ int minDistance(vector<double> &dist, vector<bool> &visited) {
     return min_index;
 }
 
-// dijkstra’s algorithm
-void dijkstra(vector<vector<double>> &graph, int src) {
+// dijkstra’s algorithm with path tracking
+void dijkstra(vector<vector<double>> &graph, int src, int target) {
     int V = graph.size();
     vector<double> dist(V, INF);
     vector<bool> visited(V, false);
+    vector<int> parent(V, -1); // To track path
 
     dist[src] = 0.0;
 
@@ -39,6 +40,7 @@ void dijkstra(vector<vector<double>> &graph, int src) {
         for (int v = 0; v < V; v++) {
             if (!visited[v] && graph[u][v] < INF && dist[u] + graph[u][v] < dist[v]) {
                 dist[v] = dist[u] + graph[u][v];
+                parent[v] = u; // Update parent
             }
         }
     }
@@ -51,6 +53,24 @@ void dijkstra(vector<vector<double>> &graph, int src) {
             cout << "Unreachable\n";
         else
             cout << fixed << setprecision(1) << dist[i] << "\n";
+    }
+
+    // print path to target node
+    if (dist[target] >= INF) {
+        cout << "\nNo path to node " << target << "\n";
+    } else {
+        cout << "\nPath to node " << target << ": ";
+        vector<int> path;
+        for (int v = target; v != -1; v = parent[v]) {
+            path.push_back(v);
+        }
+        reverse(path.begin(), path.end());
+
+        for (int i = 0; i < path.size(); i++) {
+            cout << path[i];
+            if (i != path.size() - 1) cout << " -> ";
+        }
+        cout << "\n";
     }
 }
 
@@ -89,8 +109,8 @@ int main() {
     addEdge(mat, 4, 2, 1.5); // Faculty of MIPA -> RSGM
     addEdge(mat, 4, 3, 1.9); // Faculty of MIPA -> Balairung UGM
 
-    // call dijkstra algorithm
-    dijkstra(mat, 0);
+    // call dijkstra algorithm, source=0, target=4
+    dijkstra(mat, 0, 4);
 
     return 0;
 }
